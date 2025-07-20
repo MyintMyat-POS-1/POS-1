@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>POS Dashboard</title>
+</head>
+<body>
+  <h2>Welcome to POS Dashboard</h2>
+
+  <p>
+    Logged in as: <b>{{ session.get('username') }}</b> |
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </p>
+
+  <p>
+    <a href="{{ url_for('add_product') }}">Add Product</a> |
+    <a href="{{ url_for('sale') }}">Make Sale</a>
+  </p>
+
+  <table border="1" id="productTable">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if products %}
+        {% for product in products %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.stock }}</td>
+            <td>
+              <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Are you sure to delete this product?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5">No products found.</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</body>
+</html>
